@@ -1,0 +1,444 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Soluções CFW Switch — problemas resolvidos</title>
+<style>
+  :root{
+    --bg:#0b1220; --bg2:#0f1a2e; --panel:#111f38; --panel2:#0d1a30;
+    --line:#1e3355; --line2:#274067;
+    --txt:#dbe7fb; --txt-dim:#8fa6cc; --txt-mut:#6f86ad;
+    --accent:#38e0d4; --accent2:#4aa8ff; --accent-deep:#1d7fd6;
+    --ok:#39d98a; --warn:#ffce55; --danger:#ff6b6b; --danger-bg:#2a1420;
+    --info-bg:#0e2338; --warn-bg:#2a2410; --ok-bg:#0e2a1f;
+    --font:'Segoe UI',system-ui,-apple-system,Roboto,Arial,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{background:radial-gradient(1200px 800px at 80% -10%,#12233f 0%,var(--bg) 55%) fixed;color:var(--txt);font-family:var(--font);line-height:1.6;font-size:16px}
+  a{color:var(--accent2)}
+  .wrap{display:flex;min-height:100vh}
+  aside{width:300px;flex:0 0 300px;position:sticky;top:0;height:100vh;overflow-y:auto;background:linear-gradient(180deg,var(--bg2),var(--panel2));border-right:1px solid var(--line);padding:20px 14px}
+  .brand{display:flex;align-items:center;gap:12px;padding:6px 8px 14px}
+  .brand .logo{width:44px;height:44px;border-radius:12px;flex:0 0 44px;background:conic-gradient(from 200deg,#ff6b6b,#ffce55,var(--accent),#ff6b6b);display:grid;place-items:center;font-size:22px}
+  .brand h1{font-size:15px;margin:0}
+  .brand span{font-size:11.5px;color:var(--txt-mut);display:block;font-weight:400}
+  .back{display:block;margin:0 8px 12px;font-size:13px}
+  .navsep{font-size:10.5px;letter-spacing:1.5px;color:var(--txt-mut);text-transform:uppercase;padding:14px 10px 4px;font-weight:600}
+  nav a{display:block;padding:6px 10px;border-radius:8px;color:var(--txt-dim);text-decoration:none;font-size:13px;margin:1px 0}
+  nav a:hover{background:var(--panel);color:var(--txt)}
+  nav a.active{background:linear-gradient(90deg,rgba(56,224,212,.14),transparent);color:#fff}
+  main{flex:1 1 auto;min-width:0;padding:0 0 80px}
+  .content{max-width:920px;margin:0 auto;padding:34px 40px}
+  h2.grupo{font-size:13px;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin:56px 0 0;padding-top:10px;border-top:1px solid var(--line)}
+  section{scroll-margin-top:20px;margin:26px 0 44px}
+  section h3{font-size:22px;margin:0 0 4px;line-height:1.25}
+  .sub{color:var(--txt-dim);font-size:14px;margin-bottom:10px}
+  .tag{display:inline-block;font-size:11.5px;padding:1px 8px;border-radius:99px;border:1px solid var(--line2);color:var(--txt-dim);margin:0 6px 6px 0}
+  .tag.meu{border-color:#155638;color:#6ee7a8}.tag.amigo{border-color:#4a3d12;color:#ffce55}.tag.sobrinha{border-color:#3b2a5a;color:#c7a6ff}
+  .bloco{display:grid;grid-template-columns:110px 1fr;gap:4px 14px;margin:12px 0}
+  .bloco > b{color:var(--accent);font-size:13px;text-transform:uppercase;letter-spacing:.5px;padding-top:2px}
+  .bloco > div{margin:0} .bloco > div b{color:#fff}
+  p{margin:10px 0}
+  ol,ul{margin:6px 0;padding-left:22px}
+  li{margin:3px 0}
+  code{background:#08111f;border:1px solid var(--line);border-radius:5px;padding:1px 6px;font-family:Consolas,monospace;font-size:13.5px;color:#bfe6ff}
+  kbd{background:#08111f;border:1px solid var(--line2);border-bottom-width:2px;border-radius:6px;padding:0 6px;font-family:Consolas,monospace;font-size:13px;color:#eaf2ff;white-space:nowrap}
+  .call{border-radius:12px;padding:12px 14px 12px 42px;position:relative;margin:14px 0;border:1px solid;font-size:14.5px}
+  .call::before{position:absolute;left:13px;top:11px;font-size:17px}
+  .call.info{background:var(--info-bg);border-color:var(--line2)}.call.info::before{content:"ℹ️"}
+  .call.warn{background:var(--warn-bg);border-color:#4a3d12}.call.warn::before{content:"⚠️"}
+  .call.danger{background:var(--danger-bg);border-color:#5a2130}.call.danger::before{content:"⛔"}
+  .call.ok{background:var(--ok-bg);border-color:#155638}.call.ok::before{content:"✅"}
+  .call p:first-child{margin-top:0}.call p:last-child{margin-bottom:0}
+  .fotos{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px;margin:14px 0}
+  figure{margin:0;background:var(--panel2);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+  figure img{width:100%;display:block;cursor:zoom-in;aspect-ratio:16/10;object-fit:cover;object-position:center}
+  figure.alta img{aspect-ratio:3/4}
+  figcaption{font-size:12px;color:var(--txt-mut);padding:7px 10px;border-top:1px solid var(--line)}
+  table{width:100%;border-collapse:collapse;margin:14px 0;font-size:14px}
+  th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+  th{background:var(--panel2);color:var(--accent);font-size:12.5px;text-transform:uppercase;letter-spacing:.4px}
+  #lb{position:fixed;inset:0;background:rgba(3,7,15,.93);display:none;align-items:center;justify-content:center;z-index:99;cursor:zoom-out;padding:24px}
+  #lb img{max-width:100%;max-height:100%;border-radius:10px}
+  .footer{max-width:920px;margin:0 auto;padding:20px 40px;color:var(--txt-mut);font-size:12.5px;border-top:1px solid var(--line)}
+  @media(max-width:860px){aside{display:none}.content{padding:24px 16px}.bloco{grid-template-columns:1fr}}
+  @media print{aside,#lb{display:none!important}body{background:#fff;color:#000}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<aside>
+  <div class="brand"><div class="logo">🛠️</div><div><h1>Soluções CFW Switch<span>Problemas que já resolvemos</span></h1></div></div>
+  <nav id="nav"></nav>
+</aside>
+
+<main><div class="content">
+
+<section id="inicio" data-title="Como usar esta página">
+  <h3>Como usar esta página</h3>
+  <p>Cada problema tem o <b>sintoma</b> (o que aparece na tela), a <b>causa</b> e a <b>solução</b>, com as fotos reais de quando aconteceu. As etiquetas dizem em qual console foi: <span class="tag meu">meu Switch</span><span class="tag amigo">amigo</span><span class="tag sobrinha">sobrinha</span>.</p>
+  <div class="call danger"><p><b>Duas regras que evitam metade destes problemas:</b> (1) sempre atualizar <b>Atmosphère + Hekate antes do firmware</b>; (2) abrir apps pesados (CNX, DBI, NXThemes) <b>com memória completa</b> — pelo ícone G_CAT ou segurando <kbd>R</kbd> ao abrir um jogo, <b>nunca pelo Álbum</b>.</p></div>
+
+  <h3 style="font-size:18px;margin-top:22px">Achar pelo código de erro</h3>
+  <table>
+    <tr><th>O que aparece</th><th>Significa</th><th>Ir para</th></tr>
+    <tr><td><code>2168-0001</code> / <code>2168-0002</code> + Program <code>010000000000100D</code></td><td>App aberto pelo Álbum ficou sem memória</td><td><a href="#album">Travou pelo Álbum</a></td></tr>
+    <tr><td>Program <code>0100000000001000</code></td><td>A tela inicial (tema ou menu substituto) travou</td><td><a href="#tema-firmware">Tema depois do firmware</a></td></tr>
+    <tr><td>Program <code>010041544D530000</code> + <code>std::abort()</code> + <i>Failed to save report (0x202)</i></td><td>Atmosphère velho pro firmware</td><td><a href="#ams-mitm">ams_mitm abortou</a></td></tr>
+    <tr><td>Hekate: <i>Falha ao combinar warmboot com fuses</i></td><td>Sistema original mais novo que o CFW</td><td><a href="#warmboot">Warmboot</a></td></tr>
+    <tr><td><code>2002-1002</code> ao abrir um jogo</td><td>Instalação do jogo corrompida</td><td><a href="#erro-2002">Erro 2002-1002</a></td></tr>
+    <tr><td><i>O software foi fechado porque ocorreu um erro</i></td><td>O jogo usado no <kbd>R</kbd> + jogo travou</td><td><a href="#fechado">Software fechado</a></td></tr>
+    <tr><td>CNX: <i>payload precisa ter o nome payload.bin</i></td><td>Cartão não montado com o pacote CNX</td><td><a href="#payload">payload.bin</a></td></tr>
+    <tr><td>90DNS Tester vermelho / amarelo</td><td>Bloqueio não carregou / sem internet</td><td><a href="#tester">Bloqueio da Nintendo</a></td></tr>
+  </table>
+</section>
+
+<!-- =================================================================== -->
+<h2 class="grupo">1 · Telas de erro e travamentos</h2>
+
+<section id="album" data-title="Travou pelo Álbum (2168, …100D)">
+  <h3>Tela de erro 2168-0001 / 2168-0002 no programa <code>…100D</code></h3>
+  <div class="sub"><span class="tag sobrinha">sobrinha</span><span class="tag meu">meu Switch</span> — ao baixar/instalar algo pelo CNX ou DBI</div>
+  <div class="bloco">
+    <b>Sintoma</b><div>Tela roxa do Atmosphère com <code>Program: 010000000000100D</code> no meio de um download ou instalação.</div>
+    <b>Causa</b><div><code>010000000000100D</code> é o <b>Álbum</b>. Homebrew aberto pelo Álbum roda em <b>"Modo Applet"</b> (aviso vermelho no topo), com pouca memória. App pesado acaba a memória e trava.</div>
+    <b>Solução</b><div><ol>
+      <li>Aperte <kbd>POWER</kbd> pra reiniciar — não estraga nada.</li>
+      <li>Abra o app <b>com memória completa</b>: tocar no ícone <b>G_CAT</b> da tela inicial, ou segurar <kbd>R</kbd> e abrir qualquer jogo até aparecer o menu de homebrew.</li>
+      <li>Confira que <b>não</b> aparece "Modo Applet" no topo e repita o que estava fazendo.</li>
+    </ol></div>
+  </div>
+  <div class="call warn"><p>Se travou no meio de um <b>download de firmware</b>, a pasta <code>/firmware</code> pode estar pela metade — <b>não abra o Daybreak</b> antes de baixar de novo.</p></div>
+  <div class="fotos">
+    <figure><img src="img/erro-album-2168-0002.jpg" alt=""><figcaption>2168-0002, Program …100D (Atmosphère 1.11.2)</figcaption></figure>
+    <figure><img src="img/erro-album-2168-0001.jpg" alt=""><figcaption>2168-0001, Program …100D (Atmosphère 1.12.1)</figcaption></figure>
+    <figure><img src="img/modo-applet.jpg" alt=""><figcaption>Menu de homebrew com "[Modo Applet]" em vermelho</figcaption></figure>
+  </div>
+</section>
+
+<section id="fechado" data-title="Software fechado (R + jogo)">
+  <h3>"O software foi fechado porque ocorreu um erro"</h3>
+  <div class="sub"><span class="tag meu">meu Switch</span> — ao segurar <kbd>R</kbd> e abrir um jogo</div>
+  <div class="bloco">
+    <b>Causa</b><div>O jogo escolhido pro atalho do <kbd>R</kbd> travou (com outro jogo funcionou normal).</div>
+    <b>Solução</b><div><ol>
+      <li>Escolha <b>"Não autorizar"</b> (não manda relatório pra Nintendo).</li>
+      <li>Use <b>outro jogo</b> pro <kbd>R</kbd> + jogo — ou o ícone <b>G_CAT</b>.</li>
+    </ol></div>
+  </div>
+  <div class="fotos"><figure><img src="img/software-fechado.jpg" alt=""><figcaption>Escolher "Não autorizar"</figcaption></figure></div>
+</section>
+
+<section id="tema-firmware" data-title="Tema depois do firmware (…1000)">
+  <h3>Travou ao ligar depois de atualizar o firmware — Program <code>…1000</code></h3>
+  <div class="sub"><span class="tag meu">meu Switch</span> — firmware 23.0.1 com tema antigo</div>
+  <div class="bloco">
+    <b>Sintoma</b><div>Logo depois do Daybreak, ao ligar: tela de erro com <code>Program: 0100000000001000</code>.</div>
+    <b>Causa</b><div><code>0100000000001000</code> é a <b>tela inicial</b>. O tema (ou menu substituto) instalado foi feito pro firmware antigo e não "encaixa" no novo.</div>
+    <b>Solução</b><div><ol>
+      <li>Aperte <b>volume</b> (não o POWER) pra cair no Hekate. Se cair no sistema original, <a href="#reinicio">desligue e ligue</a>.</li>
+      <li>Hekate → <b>Tools → USB Tools → SD Card</b> e, no PC, mova a pasta <code>atmosphere/contents/0100000000001000</code> pra um backup.</li>
+      <li>Ligue em <b>CFW (emuMMC)</b> — volta com o visual padrão.</li>
+      <li>Depois reinstale o tema pelo <a href="#tema-reinstalar">NXThemes 3.0.2</a>.</li>
+    </ol></div>
+  </div>
+  <div class="call ok"><p>Pra não acontecer: <b>tire o tema antes</b> de atualizar o firmware.</p></div>
+  <div class="fotos"><figure><img src="img/erro-tela-inicial-tema.jpg" alt=""><figcaption>Program 0100000000001000 no firmware 23.0.1</figcaption></figure></div>
+</section>
+
+<section id="ams-mitm" data-title="ams_mitm abortou (…4D530000)">
+  <h3><i>A fatal error occurred when running Atmosphère</i> — <code>010041544D530000</code></h3>
+  <div class="sub"><span class="tag amigo">amigo</span></div>
+  <div class="bloco">
+    <b>Sintoma</b><div>Tela preta com <code>std::abort() called (0xffe)</code> e <i>Failed to save report to the SD card! (00000202)</i>.</div>
+    <b>Causa</b><div><code>010041544D530000</code> é um módulo do próprio Atmosphère (<code>ams_mitm</code>). O <b>Atmosphère estava velho demais</b> pro firmware. O "não salvou no SD" é consequência do travamento, não defeito do cartão.</div>
+    <b>Solução</b><div><b>Atualizar o Atmosphère</b> (e o Hekate) pra versão que suporta o firmware. Resolveu.</div>
+  </div>
+  <div class="fotos"><figure><img src="img/erro-ams-mitm.jpg" alt=""><figcaption>Fatal do ams_mitm</figcaption></figure></div>
+</section>
+
+<section id="warmboot" data-title="Warmboot × fuses (Hekate)">
+  <h3>Hekate: "Falha ao combinar warmboot com fuses"</h3>
+  <div class="sub"><span class="tag amigo">amigo</span> — Switch OLED (Mariko)</div>
+  <div class="bloco">
+    <b>Sintoma</b><div>Aviso vermelho no Hekate ao ligar; o modo de descanso (sleep) não acorda mais.</div>
+    <b>Causa</b><div>O <b>sistema original</b> foi atualizado (23.0.1) e queimou mais <b>fuses</b> (24), enquanto o CFW/emuMMC ficou no 22.x. Em <b>Console Info → HW &amp; Fuses</b> aparecia <code>24 | 0 - HOS: Desconhecido</code>: o Hekate 6.5.3 não conhecia essa contagem.</div>
+    <b>Solução</b><div><ol>
+      <li>Enquanto não corrige: pode jogar, mas <b>sem usar o descanso</b> — desligar pelo menu.</li>
+      <li>Atualizar <b>Hekate (6.5.4)</b> e <b>Atmosphère (1.12.1)</b>, que conhecem o 23.0.1.</li>
+      <li>Atualizar o firmware da <b>emuMMC</b> pra mesma versão do original (<a href="#daybreak">Daybreak</a>).</li>
+    </ol></div>
+  </div>
+  <div class="call warn"><p>Sempre que entrar no sistema <b>original</b>, deixe em <b>modo avião</b>: foi ele atualizar sozinho que começou o problema.</p></div>
+  <div class="fotos">
+    <figure class="alta"><img src="img/warmboot-erro.jpg" alt=""><figcaption>Aviso vermelho do warmboot</figcaption></figure>
+    <figure><img src="img/hw-fuses.jpg" alt=""><figcaption>HW &amp; Fuses: 24 fuses, "HOS: Desconhecido" (identificadores borrados)</figcaption></figure>
+    <figure><img src="img/hekate-653-menu.jpg" alt=""><figcaption>Hekate 6.5.3 — aba Console Info no topo</figcaption></figure>
+    <figure><img src="img/versao-sistema-original.jpg" alt=""><figcaption>Versão do sistema original: 23.0.1</figcaption></figure>
+  </div>
+</section>
+
+<section id="erro-2002" data-title="Erro 2002-1002 num jogo">
+  <h3>Erro 2002-1002 ao abrir um jogo (só ele)</h3>
+  <div class="sub"><span class="tag meu">meu Switch</span> — Cuphead</div>
+  <div class="bloco">
+    <b>Causa</b><div>A <b>instalação</b> daquele jogo ficou corrompida no cartão. Os arquivos no PC estavam íntegros (testados).</div>
+    <b>Solução</b><div><ol>
+      <li>Configurações → Gerenciamento de dados → Gerenciar software → o jogo → <b>Excluir software</b> (o save fica).</li>
+      <li>Reinstalar na ordem <b>Base → Update → DLC</b>, um de cada vez.</li>
+      <li>Se voltar mesmo assim, desconfiar do <b>microSD</b>.</li>
+    </ol></div>
+  </div>
+</section>
+
+<!-- =================================================================== -->
+<h2 class="grupo">2 · Atualizar Atmosphère, Hekate e firmware</h2>
+
+<section id="ordem" data-title="A ordem certa">
+  <h3>A ordem certa: Atmosphère/Hekate primeiro, firmware depois</h3>
+  <div class="bloco">
+    <b>Por quê</b><div>Firmware novo com Atmosphère velho = console travado no boot (foi o caso do <a href="#ams-mitm">ams_mitm</a>).</div>
+    <b>Passos</b><div><ol>
+      <li><b>Atmosphère + Hekate</b> (pelo CNX ou <a href="#payload">manual</a>).</li>
+      <li>Reiniciar, conferir a versão do Hekate e rodar o <a href="#tester">90DNS Tester</a>.</li>
+      <li><b>Tirar o tema</b> (<a href="#tema-firmware">por quê</a>).</li>
+      <li><b>Firmware</b>: CNX → Baixar firmwares → <a href="#daybreak">Daybreak</a>.</li>
+    </ol></div>
+  </div>
+  <div class="call info"><p>Na lista de firmwares do CNX, o "<b>(AMS 1.12.0)</b>" ao lado do 23.0.1 é a <b>versão mínima</b> do Atmosphère. Com a 1.12.1 (mais nova) funciona.</p></div>
+  <div class="fotos">
+    <figure><img src="img/cnx-informacoes.jpg" alt=""><figcaption>CNX: "Atmosphere desatualizado" e "Novo firmware disponível"</figcaption></figure>
+    <figure><img src="img/cnx-firmwares.jpg" alt=""><figcaption>Lista de firmwares (★ = o atual)</figcaption></figure>
+  </div>
+</section>
+
+<section id="cnx-pacote" data-title="Atualizar pelo CNX">
+  <h3>Atualizar o Atmosphère pelo CNX</h3>
+  <div class="sub"><span class="tag amigo">amigo</span> — cartão montado com o pacote CNX</div>
+  <ol>
+    <li>Se o CNX avisar que tem versão nova <b>dele mesmo</b>, pode atualizar — é só o app.</li>
+    <li><b>Baixar Atmosphère (AMS)</b> → o pacote com o firmware certo (ex.: <code>CNX 23.0.1-1 | AMS 1.12.1</code>).</li>
+    <li>Na tela "Preservar arquivos", deixe tudo em <b>[Manter]</b> → Salvar e continuar.</li>
+    <li>Ele reinicia sozinho e instala. Confira <b>hekate 6.5.4</b> no topo.</li>
+  </ol>
+  <div class="fotos">
+    <figure><img src="img/cnx-atualizar-app.jpg" alt=""><figcaption>Atualização do próprio app CNX</figcaption></figure>
+    <figure><img src="img/cnx-baixar-ams.jpg" alt=""><figcaption>Pacote CNX 23.0.1-1 | AMS 1.12.1</figcaption></figure>
+    <figure><img src="img/cnx-manter-arquivos.jpg" alt=""><figcaption>Preservar arquivos: tudo em [Manter]</figcaption></figure>
+    <figure class="alta"><img src="img/hekate-654.jpg" alt=""><figcaption>Hekate 6.5.4 depois da atualização</figcaption></figure>
+  </div>
+</section>
+
+<section id="extraindo" data-title="CNX parou em 'Extraindo'">
+  <h3>CNX não atualizou — log parou em "Extraindo pacote"</h3>
+  <div class="sub"><span class="tag sobrinha">sobrinha</span></div>
+  <div class="bloco">
+    <b>Causa</b><div>O CNX estava aberto pelo <a href="#album">Álbum</a> e travou extraindo os 165 MB. O <code>log_atualizacao.txt</code> na raiz do cartão termina em "Extraindo pacote Atmosphère novo…" e o <code>ams.zip</code> ficou incompleto. O sistema <b>não</b> é trocado pela metade.</div>
+    <b>Solução</b><div>Repetir com memória completa (G_CAT ou <kbd>R</kbd> + jogo) — ou fazer a <a href="#payload">atualização manual</a>.</div>
+  </div>
+</section>
+
+<section id="cnx-tema" data-title="CNX trava ao remover tema">
+  <h3>CNX trava em "Remover e continuar" (aviso de tema)</h3>
+  <div class="sub"><span class="tag sobrinha">sobrinha</span></div>
+  <div class="bloco">
+    <b>Sintoma</b><div>Ao baixar firmware, o CNX avisa do tema; escolhendo "Remover e continuar", o app fecha com erro.</div>
+    <b>Solução</b><div><ol>
+      <li>Remover à mão pelo USB do Hekate: mover <code>atmosphere/contents/0100000000001000</code> (e <code>…1007</code>, <code>…1013</code>, se existirem) pro PC.</li>
+      <li>Abrir o CNX de novo — o aviso nem aparece.</li>
+      <li>Se preferir manter o tema e arriscar: escolha <b>"Continuar"</b>; se travar depois, faça o <a href="#tema-firmware">passo a passo do …1000</a>.</li>
+    </ol></div>
+  </div>
+  <div class="fotos"><figure><img src="img/cnx-aviso-tema.jpg" alt=""><figcaption>Aviso de tema do CNX</figcaption></figure></div>
+</section>
+
+<section id="menu-substituto" data-title="Menu substituto bloqueia firmware">
+  <h3>Firmware não atualiza "por causa do tema" mesmo depois de tirar</h3>
+  <div class="sub"><span class="tag amigo">amigo</span> — tela inicial estilo PS3</div>
+  <div class="bloco">
+    <b>Causa</b><div>A tela inicial com categorias (Usuário, Jogos, Homebrew…) não é um tema comum: é um <b>menu substituto</b>, que mora em <code>atmosphere/contents/0100000000001000</code>. Tirar o tema pelo instalador não remove ele.</div>
+    <b>Solução</b><div>Mover essa pasta pro PC (backup) e seguir a <a href="#ordem">ordem certa</a>. Depois do firmware, só volte com uma versão do menu que suporte o firmware novo.</div>
+  </div>
+  <div class="fotos"><figure class="alta"><img src="img/menu-substituto.jpg" alt=""><figcaption>Menu substituto estilo PS3</figcaption></figure></div>
+</section>
+
+<section id="payload" data-title="payload.bin / atualização manual">
+  <h3>CNX: "o payload precisa ter o nome payload.bin" — atualização manual</h3>
+  <div class="sub"><span class="tag meu">meu Switch</span><span class="tag sobrinha">sobrinha</span></div>
+  <div class="bloco">
+    <b>Causa</b><div>O cartão não foi montado com o pacote CNX (no meu: kit próprio, com <code>hekate_ctcaer_6.4.2.bin</code> e sem <code>payload.bin</code>). O CNX mostra "CNX atual: Indeterminado".</div>
+    <b>Solução</b><div>Atualizar à mão com as versões oficiais do GitHub:
+      <ol>
+        <li>Baixar <b>Atmosphère</b> (<code>atmosphere-…zip</code> + <code>fusee.bin</code>) e <b>Hekate</b> (<code>hekate_ctcaer_…_Nyx_….zip</code>).</li>
+        <li>Hekate → <b>Tools → USB Tools → SD Card</b> (o cartão vira um pendrive no PC).</li>
+        <li><b>Backup</b> de <code>bootloader/</code>, <code>payload.bin</code>, <code>atmosphere/</code> (package3, stratosphere.romfs, hosts, config) e do tema.</li>
+        <li>Copiar o conteúdo dos zips por cima — <b>menos</b> <code>bootloader/res</code> (ícones) e sem mexer em <code>hekate_ipl.ini</code>, <code>atmosphere/hosts</code>, tema.</li>
+        <li>Copiar o <code>hekate_ctcaer_X.bin</code> como <b><code>payload.bin</code></b> na raiz e como <code>atmosphere/reboot_payload.bin</code>; <code>fusee.bin</code> na raiz e em <code>bootloader/payloads/</code>.</li>
+        <li>Ejetar no Windows, sair do USB e ligar: conferir a versão no topo do Hekate e em Configurações → Sistema (<code>…|AMS 1.12.1|E</code>).</li>
+      </ol></div>
+  </div>
+  <div class="call warn"><p>O pacote CNX tem módulos extras. Atualizando só o Atmosphère "puro", algum módulo antigo pode não carregar — se o console travar no boot, desligue o módulo pelo USB do Hekate (tirar a pasta dele de <code>atmosphere/contents</code>).</p></div>
+  <div class="fotos"><figure><img src="img/cnx-payload-bin.jpg" alt=""><figcaption>Mensagem do CNX sobre o payload.bin</figcaption></figure></div>
+</section>
+
+<section id="daybreak" data-title="Daybreak (firmware)">
+  <h3>Instalar o firmware no Daybreak</h3>
+  <ol>
+    <li>Console <b>no carregador</b>.</li>
+    <li>Daybreak → <b>Install</b> → pasta <code>/firmware</code>.</li>
+    <li><b>Conferir a versão nova</b> antes de confirmar. Se aparecer a mesma versão de antes, a pasta <code>/firmware</code> é a antiga — <b>não instale</b>.</li>
+    <li><b>Preserve settings</b> e <b>FAT32 + exFAT</b>.</li>
+    <li>Não desligar no meio. No fim, reiniciar (<a href="#reinicio">desligar e ligar</a>, no meu console).</li>
+  </ol>
+</section>
+
+<section id="tema-reinstalar" data-title="Reinstalar o tema (NXThemes)">
+  <h3>Pôr o tema de volta no firmware novo</h3>
+  <div class="sub"><span class="tag meu">meu Switch</span></div>
+  <ol>
+    <li>O <b>NXThemes Installer 3.0.2</b> é o que suporta o 23.0.x — e exige <b>Atmosphère 1.12.1</b>. A 2.9 não serve.</li>
+    <li>Os <code>.nxtheme</code> continuam em <code>/Themes</code> (só sai o tema <i>ativo</i>).</li>
+    <li>Abrir o NXThemes com memória completa → escolher a parte (Home Menu, Lock Screen…) → <b>Instalar</b> → desligar e ligar.</li>
+  </ol>
+  <div class="call info"><p>Não copie a pasta <code>contents/0100000000001000</code> antiga de volta — ela é do firmware anterior. Reinstale sempre pelo NXThemes.</p></div>
+</section>
+
+<!-- =================================================================== -->
+<h2 class="grupo">3 · Bloqueio da Nintendo</h2>
+
+<section id="tester" data-title="90DNS Tester: cores e falhas">
+  <h3>90DNS Tester: verde, amarelo, vermelho</h3>
+  <div class="sub"><span class="tag sobrinha">sobrinha</span><span class="tag amigo">amigo</span></div>
+  <table>
+    <tr><th>Cor</th><th>Significa</th><th>O que fazer</th></tr>
+    <tr><td>🟢 <code>blocked</code></td><td>Bloqueado</td><td>Tudo certo</td></tr>
+    <tr><td>🟡 <code>unresolved</code></td><td>Sem resposta — quase sempre <b>Wi-Fi desligado</b></td><td>Testar de novo com internet</td></tr>
+    <tr><td>🔴 <code>unblocked</code></td><td>Chegou na Nintendo — <b>sem proteção</b></td><td>Modo avião na hora e corrigir</td></tr>
+  </table>
+  <div class="bloco">
+    <b>Vermelho<br>depois de<br>copiar</b><div>O bloqueio (<code>atmosphere/hosts/emummc.txt</code>) só carrega quando o console <b>liga</b>. Copiou e não reiniciou → vermelho. Depois de desligar e ligar, ficou verde.</div>
+    <b>Conferir<br>sem o tester</b><div>O Atmosphère grava <code>atmosphere/logs/dns_mitm_startup.log</code>. Tem que ter <i>"Selected /hosts/emummc.txt"</i> e a lista (<code>*nintendo.*</code>, …).</div>
+    <b>Atenção</b><div><ul>
+      <li><code>emummc.txt</code> vale no <b>CFW (emuMMC)</b>; <code>default.txt</code> nas outras opções. Se o <code>default.txt</code> só tem a telemetria, a opção <b>"SysNAND CFW"</b> do Hekate fica <b>sem bloqueio</b>.</li>
+      <li>O sistema <b>original (Stock)</b> nunca tem bloqueio: sempre em modo avião.</li>
+      <li>O pacote CNX já traz um <code>emummc.txt</code> com <code>127.0.0.1 *nintendo*</code> — conferir com o tester mesmo assim.</li>
+    </ul></div>
+  </div>
+</section>
+
+<section id="multiplayer" data-title="Jogar com dois Switch">
+  <h3>Dá pra jogar em dupla com dois Switch?</h3>
+  <ul>
+    <li><b>Sem fio local / LAN</b> (console fala direto com console): funciona com o bloqueio ligado e não passa pela Nintendo.</li>
+    <li><b>Online</b>: passa pelos servidores da Nintendo — o bloqueio corta, e com CFW é caminho de ban. Mesmo os dois na mesma casa.</li>
+    <li>Ex.: <b>Core Keeper</b> no Switch é <b>só online</b> (local = 1 jogador) → não dá em dupla com segurança.</li>
+  </ul>
+</section>
+
+<!-- =================================================================== -->
+<h2 class="grupo">4 · Transferência e instalação (MTP / USB)</h2>
+
+<section id="mtp" data-title="Instalar por MTP (DBI)">
+  <h3>Instalar por MTP: o que entra e o que não entra</h3>
+  <ul>
+    <li>A pasta <b>Install</b> do DBI só aceita <code>NSP</code>, <code>NSZ</code>, <code>XCI</code>, <code>XCZ</code>. <b><code>.rar</code> não instala</b>: extraia antes.</li>
+    <li><b>DLC</b> e <b>Update</b> precisam do <b>jogo base</b> instalado.</li>
+    <li>Se o DBI disse que instalou mas a janela de cópia do PC ficou travada: pode <b>cancelar</b> no PC.</li>
+    <li>A pasta "Games" do MTP <b>não atualiza</b> enquanto a sessão está aberta — confira na tela do Switch.</li>
+    <li>Se o envio não começa: <kbd>B</kbd> no DBI, tirar o cabo, abrir de novo e reconectar.</li>
+  </ul>
+  <div class="fotos">
+    <figure class="alta"><img src="img/dbi-menu.jpg" alt=""><figcaption>Menu do DBI</figcaption></figure>
+    <figure class="alta"><img src="img/dbi-mtp.jpg" alt=""><figcaption>MTP do DBI: sessão aberta</figcaption></figure>
+  </div>
+</section>
+
+<section id="ums" data-title="Trocar arquivos: USB do Hekate">
+  <h3>MTP não substitui arquivo — use o USB do Hekate</h3>
+  <div class="bloco">
+    <b>Sintoma</b><div>Copiando por cima pelo MTP, o arquivo antigo continua lá (o MTP também mostra "0 bytes" pra tudo).</div>
+    <b>Solução</b><div>Pra <b>atualizar ou substituir</b> arquivos do sistema: Hekate → <b>Tools → USB Tools → SD Card</b> (deixar "Somente leitura" desligado). O cartão aparece como disco no PC. No fim, <b>ejetar</b> no Windows antes de sair.</div>
+  </div>
+</section>
+
+<section id="memoria" data-title="Pouco espaço na memória do sistema">
+  <h3>"Memória do sistema" quase cheia no CFW</h3>
+  <p>A memória do sistema que aparece no CFW é a <b>da emuMMC</b> — separada do sistema original. Ela começou como cópia do original e soma tudo que foi instalado nela. Pra liberar: Configurações → Gerenciamento de dados → <b>Mover dados entre sistema e microSD</b>.</p>
+</section>
+
+<!-- =================================================================== -->
+<h2 class="grupo">5 · Chip, boot e hardware</h2>
+
+<section id="reinicio" data-title="Reiniciar cai no original">
+  <h3>Reiniciou e abriu o sistema original</h3>
+  <div class="sub"><span class="tag meu">meu Switch</span> — OLED com chip</div>
+  <div class="bloco">
+    <b>Causa</b><div>O chip só entra no Hekate quando o console <b>liga do zero</b>. Qualquer <b>reinício</b> — inclusive de app (NXThemes, Daybreak, POWER na tela de erro) — vai pro original.</div>
+    <b>Solução</b><div>Segurar <kbd>POWER</kbd> → <b>Desligar</b> → esperar 5 s → ligar. No original, <b>modo avião</b>.</div>
+  </div>
+  <div class="fotos"><figure><img src="img/hekate-iniciar.jpg" alt=""><figcaption>Hekate → Iniciar: ATMOSPHERE (CFW) × ORIGINAL</figcaption></figure></div>
+</section>
+
+<section id="chip" data-title="Cai no original mesmo desligando">
+  <h3>Cai no original mesmo desligando e ligando</h3>
+  <div class="sub"><span class="tag meu">meu Switch</span> — ~6 vezes seguidas; volta a funcionar horas depois</div>
+  <div class="bloco">
+    <b>Causa<br>provável</b><div>O chip falha no "glitch" do boot. Funcionar só depois de horas aponta pra <b>calor</b> ou <b>contato fraco</b>: adaptador do <b>DAT0</b> (comum no OLED) ou fio do <b>RST</b> (já deu o código <code>**</code> antes).</div>
+    <b>O que fazer</b><div><ol>
+      <li>Teste: quando falhar, esperar 15–20 min fora do dock. Voltou? É calor.</li>
+      <li>Ver o <b>código do LED</b> do chip quando falha — ele diz qual ponto (DAT0, RST, CMD…).</li>
+      <li>DAT0 → a ligação permanente ("método kamikaze") costuma resolver; RST → refazer o fio. Os dois são <b>solda fina perto da memória</b>: com quem tem prática.</li>
+    </ol></div>
+  </div>
+</section>
+
+<section id="joycon" data-title="Joy-Con esquerdo não conecta">
+  <h3>Joy-Con esquerdo não é reconhecido encaixado</h3>
+  <div class="sub"><span class="tag amigo">amigo</span></div>
+  <div class="bloco">
+    <b>Sintoma</b><div>"Um conectado e outro não"; pelo Bluetooth funciona; com o Joy-Con original também falha no trilho esquerdo; cai na tela de conectar controle.</div>
+    <b>Causa</b><div>Defeito <b>no console</b>: o cabinho (flex) do trilho esquerdo solto/danificado — comum depois de abrir pra instalar chip — ou pino do trilho torto/sujo.</div>
+    <b>Solução</b><div>Confirmar no sistema original. Se falhar lá também, abrir e reconectar/trocar o flex do trilho.</div>
+  </div>
+  <div class="fotos"><figure class="alta"><img src="img/controle-nao-conecta.jpg" alt=""><figcaption>Tela de conectar controle</figcaption></figure></div>
+</section>
+
+<!-- =================================================================== -->
+<h2 class="grupo">6 · Outros</h2>
+
+<section id="rom" data-title="Emulador: ROM encriptada">
+  <h3>Emulador no celular: "Sua ROM está encriptada"</h3>
+  <div class="sub"><span class="tag amigo">amigo</span></div>
+  <p>O emulador não tem as <b>chaves</b> pra abrir o jogo. Causas: <code>prod.keys</code> não instalado, chaves de firmware antigo demais pro jogo, falta do <code>title.keys</code>, ou abrir o arquivo de Update/DLC em vez do Base. As chaves vêm do <b>próprio Switch</b> (Lockpick_RCM pelo Hekate) — nunca usar as de outra pessoa: elas identificam o console.</p>
+  <div class="fotos"><figure><img src="img/rom-encriptada.jpg" alt=""><figcaption>Mensagem do emulador</figcaption></figure></div>
+</section>
+
+<section id="gcat" data-title="Ícone G_CAT (memória completa)">
+  <h3>Ícone G_CAT: homebrew com memória completa</h3>
+  <div class="sub"><span class="tag meu">meu Switch</span></div>
+  <p>App nosso (<code>/switch/gcat-launcher/gcat-launcher.nro</code>) que abre o sphaira em modo completo. No sphaira: selecionar <b>G_CAT</b> → <kbd>X</kbd> → <b>Install Forwarder</b>. O ícone na tela inicial substitui o <kbd>R</kbd> + jogo e acaba com os travamentos do <a href="#album">Álbum</a>.</p>
+</section>
+
+</div>
+<div class="footer">Página pessoal de soluções · fotos dos consoles da família e de amigos, com dados identificáveis borrados.</div>
+</main>
+</div>
+<div id="lb" onclick="this.style.display='none'"><img src="" alt=""></div>
+<script>
+  var nav = document.getElementById('nav');
+  var secs = Array.prototype.slice.call(document.querySelectorAll('section'));
+  var grupos = Array.prototype.slice.call(document.querySelectorAll('h2.grupo'));
+  document.querySelectorAll('.content > section, .content > h2.grupo').forEach(function(el){
+    if (el.tagName === 'H2') { var s = document.createElement('div'); s.className = 'navsep'; s.textContent = el.textContent; nav.appendChild(s); return; }
+    var a = document.createElement('a'); a.href = '#' + el.id; a.dataset.for = el.id; a.textContent = el.dataset.title; nav.appendChild(a);
+  });
+  document.querySelectorAll('figure img').forEach(function(img){
+    img.addEventListener('click', function(){ var lb = document.getElementById('lb'); lb.querySelector('img').src = img.src; lb.style.display = 'flex'; });
+  });
+  var obs = new IntersectionObserver(function(es){ es.forEach(function(e){ if (e.isIntersecting) nav.querySelectorAll('a').forEach(function(a){ a.classList.toggle('active', a.dataset.for === e.target.id); }); }); }, {rootMargin:'-40% 0px -55% 0px'});
+  secs.forEach(function(s){ obs.observe(s); });
+</script>
+</body>
+</html>
